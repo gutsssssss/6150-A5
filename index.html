@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Register</h1>
+    <form id="registrationForm" novalidate>
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required minlength="3" />
+        <span class="error" id="nameError"></span>
+      </div>
+      <div class="form-group">
+        <label for="birthYear">Year of Birth:</label>
+        <input type="number" id="birthYear" name="birthYear" required min="1901" />
+        <span class="error" id="birthYearError"></span>
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="usResident" name="usResident" />
+          Do you live in the United States?
+        </label>
+      </div>
+      <div class="form-group" id="zipGroup" style="display: none;">
+        <label for="zip">ZIP Code:</label>
+        <input type="text" id="zip" name="zip" pattern="[0-9]{5}" />
+        <span class="error" id="zipError"></span>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required minlength="8" />
+        <span class="error" id="passwordError"></span>
+      </div>
+      <fieldset class="form-group">
+        <legend>Preferred type of pizza:</legend>
+        <label>
+          <input type="radio" name="pizza" value="with" required />
+          With pineapple
+        </label><br />
+        <label>
+          <input type="radio" name="pizza" value="without" required />
+          Without pineapple
+        </label><br />
+        <label>
+          <input type="radio" name="pizza" value="no" required />
+          I do not like pizza
+        </label><br />
+        <span class="error" id="pizzaError"></span>
+      </fieldset>
+      <button type="submit">Register</button>
+      <p id="successMessage" class="success" style="display: none;">
+        Accepted! Form submitted successfully.
+      </p>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
