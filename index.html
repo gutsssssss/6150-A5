@@ -1,62 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Registration Form</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizza Registration Form</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Register</h1>
-    <form id="registrationForm" novalidate>
+    <h1>Register for a Free Pizza!</h1>
+    <form id="registrationForm">
+      <!-- Name Field -->
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required minlength="3" />
-        <span class="error" id="nameError"></span>
+        <input type="text" id="name" name="name" required minlength="3">
+        <span class="error-message" id="nameError">Name must be at least 3 characters.</span>
       </div>
+
+      <!-- Year of Birth Field -->
       <div class="form-group">
-        <label for="birthYear">Year of Birth:</label>
-        <input type="number" id="birthYear" name="birthYear" required min="1901" />
-        <span class="error" id="birthYearError"></span>
+        <label for="yearOfBirth">Year of Birth:</label>
+        <input type="number" id="yearOfBirth" name="yearOfBirth" required min="1900" max="2023">
+        <span class="error-message" id="yearOfBirthError">Year of birth must be between 1900 and 2023.</span>
       </div>
+
+      <!-- US Resident Checkbox -->
       <div class="form-group">
-        <label>
-          <input type="checkbox" id="usResident" name="usResident" />
-          Do you live in the United States?
+        <label for="usResident">
+          <input type="checkbox" id="usResident" name="usResident"> Do you live in the United States?
         </label>
       </div>
-      <div class="form-group" id="zipGroup" style="display: none;">
-        <label for="zip">ZIP Code:</label>
-        <input type="text" id="zip" name="zip" pattern="[0-9]{5}" />
-        <span class="error" id="zipError"></span>
+
+      <!-- Zipcode Field (Conditional) -->
+      <div class="form-group" id="zipcodeGroup" style="display: none;">
+        <label for="zipcode">Zipcode:</label>
+        <input type="text" id="zipcode" name="zipcode" pattern="\d{5}" title="5-digit zipcode">
+        <span class="error-message" id="zipcodeError">Zipcode must be 5 digits.</span>
       </div>
+
+      <!-- Password Field -->
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required minlength="8" />
-        <span class="error" id="passwordError"></span>
+        <input type="password" id="password" name="password" required minlength="8">
+        <span class="error-message" id="passwordError">Password must be at least 8 characters.</span>
       </div>
-      <fieldset class="form-group">
-        <legend>Preferred type of pizza:</legend>
-        <label>
-          <input type="radio" name="pizza" value="with" required />
-          With pineapple
-        </label><br />
-        <label>
-          <input type="radio" name="pizza" value="without" required />
-          Without pineapple
-        </label><br />
-        <label>
-          <input type="radio" name="pizza" value="no" required />
-          I do not like pizza
-        </label><br />
-        <span class="error" id="pizzaError"></span>
-      </fieldset>
-      <button type="submit">Register</button>
-      <p id="successMessage" class="success" style="display: none;">
-        Accepted! Form submitted successfully.
-      </p>
+
+      <!-- Preferred Pizza Type -->
+      <div class="form-group radio-group">
+        <label>Preferred Type of Pizza:</label>
+        <div>
+          <label>
+            <input type="radio" name="pizzaType" value="With pineapple" required> With pineapple
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio" name="pizzaType" value="Without pineapple"> Without pineapple
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="radio" name="pizzaType" value="I do not like pizza"> I do not like pizza
+          </label>
+        </div>
+        <span class="error-message" id="pizzaTypeError">Please select a pizza type.</span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit">Submit</button>
     </form>
+
+    <!-- Accepted Message -->
+    <div id="acceptedMessage" class="accepted-message" style="display: none;">
+      <h2>Accepted!</h2>
+      <p>Thank you for registering. Your pizza is on its way!</p>
+    </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
