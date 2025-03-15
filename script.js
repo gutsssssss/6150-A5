@@ -1,73 +1,82 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("registrationForm");
+  const usResidentCheckbox = document.getElementById("usResident");
+  const zipcodeGroup = document.getElementById("zipcodeGroup");
+  const zipcodeInput = document.getElementById("zipcode");
+  const acceptedMessage = document.getElementById("acceptedMessage");
 
-// Listen for changes on the "Do you live in the United States?" checkbox
-document.getElementById('usResident').addEventListener('change', function() {
-  let zipGroup = document.getElementById('zipGroup'); // Get the ZIP code input container
+  // Toggle Zipcode Field
+  usResidentCheckbox.addEventListener("change", function () {
+    if (this.checked) {
+      zipcodeGroup.style.display = "block";
+      zipcodeInput.setAttribute("required", true);
+    } else {
+      zipcodeGroup.style.display = "none";
+      zipcodeInput.removeAttribute("required");
+    }
+  });
 
-  if (this.checked) {
-    zipGroup.style.display = 'block'; // Show ZIP code field if checked
-  } else {
-    zipGroup.style.display = 'none'; // Hide ZIP code field if unchecked
-    document.getElementById('zip').value = ''; // Clear ZIP code input value
-  }
-});
+  // Form Validation
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let isValid = true;
 
-// Listen for form submission
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent default form submission
+    // Validate Name
+    const nameInput = document.getElementById("name");
+    if (nameInput.value.length < 3) {
+      document.getElementById("nameError").style.display = "block";
+      isValid = false;
+    } else {
+      document.getElementById("nameError").style.display = "none";
+    }
 
-  let name = document.getElementById('name').value.trim(); // Trim whitespace
-  let birthYear = document.getElementById('birthYear').value;
-  let usResident = document.getElementById('usResident').checked;
-  let zip = document.getElementById('zip').value;
-  let password = document.getElementById('password').value;
-  let pizzaSelected = document.querySelector('input[name="pizza"]:checked'); // Get selected radio button
+    // Validate Year of Birth
+    const yearOfBirthInput = document.getElementById("yearOfBirth");
+    const currentYear = new Date().getFullYear();
+    if (
+      yearOfBirthInput.value < 1900 ||
+      yearOfBirthInput.value >= currentYear
+    ) {
+      document.getElementById("yearOfBirthError").style.display = "block";
+      isValid = false;
+    } else {
+      document.getElementById("yearOfBirthError").style.display = "none";
+    }
 
-  let errors = false; // Track if there are any validation errors
+    // Validate Zipcode (if applicable)
+    if (usResidentCheckbox.checked && !/^\d{5}$/.test(zipcodeInput.value)) {
+      document.getElementById("zipcodeError").style.display = "block";
+      isValid = false;
+    } else {
+      document.getElementById("zipcodeError").style.display = "none";
+    }
 
-  // Validate Name (at least 3 characters)
-  if (name.length < 3) {
-    document.getElementById('nameError').innerText = 'Name must be at least 3 characters.';
-    errors = true;
-  } else {
-    document.getElementById('nameError').innerText = '';
-  }
+    // Validate Password
+    const passwordInput = document.getElementById("password");
+    if (passwordInput.value.length < 8) {
+      document.getElementById("passwordError").style.display = "block";
+      isValid = false;
+    } else {
+      document.getElementById("passwordError").style.display = "none";
+    }
 
-  // Validate Year of Birth (must be > 1900 and < current year)
-  let currentYear = new Date().getFullYear();
-  if (birthYear <= 1900 || birthYear >= currentYear || isNaN(birthYear)) {
-    document.getElementById('birthYearError').innerText = 'Enter a valid year.';
-    errors = true;
-  } else {
-    document.getElementById('birthYearError').innerText = '';
-  }
+    // Validate Pizza Type
+    const pizzaTypeInputs = document.querySelectorAll('input[name="pizzaType"]');
+    let pizzaTypeSelected = false;
+    pizzaTypeInputs.forEach((input) => {
+      if (input.checked) pizzaTypeSelected = true;
+    });
+    if (!pizzaTypeSelected) {
+      document.getElementById("pizzaTypeError").style.display = "block";
+      isValid = false;
+    } else {
+      document.getElementById("pizzaTypeError").style.display = "none";
+    }
 
-  // Validate ZIP Code (if US resident, it must be 5 digits)
-  if (usResident && !/^[0-9]{5}$/.test(zip)) {
-    document.getElementById('zipError').innerText = 'ZIP code must be 5 digits.';
-    errors = true;
-  } else {
-    document.getElementById('zipError').innerText = '';
-  }
-
-  // Validate Password (at least 8 characters)
-  if (password.length < 8) {
-    document.getElementById('passwordError').innerText = 'Password must be at least 8 characters.';
-    errors = true;
-  } else {
-    document.getElementById('passwordError').innerText = '';
-  }
-
-  // Validate Pizza Preference (one must be selected)
-  if (!pizzaSelected) {
-    document.getElementById('pizzaError').innerText = 'Select a pizza preference.';
-    errors = true;
-  } else {
-    document.getElementById('pizzaError').innerText = '';
-  }
-
-  // If no errors, submit the form and display success message
-  if (!errors) {
-    document.getElementById('registrationForm').style.display = 'none'; // Hide form
-    document.getElementById('successMessage').style.display = 'block'; // Show success message
-  }
+    // Show Accepted Message if Valid
+    if (isValid) {
+      form.style.display = "none";
+      acceptedMessage.style.display = "block";
+    }
+  });
 });
